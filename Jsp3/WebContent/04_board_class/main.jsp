@@ -14,6 +14,8 @@
 	게시판 메인화면
 	<a href="<%= projectName %>/BoardControl?service=list-page&pageNum=1"> 게시판으로 이동 </a><br/><br/>
 	<img src="imgs/image.gif"><br/>
+	
+	안녕하세요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 </body>
 </html>
