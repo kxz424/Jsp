@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<properties resource="db.properties"></properties>		<!-- db연결정보 파일 지정 -->
+	
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+	</settings>
+	
+	<typeAliases>
+		<typeAlias type="board.model.BoardRec" alias="boardRec"/>
+	</typeAliases>
+
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />	<!-- JDBC / MANAGER (커밋과 롤백을 처리할 담당자) -->
+			<dataSource type="POOLED">		<!-- 커넥션풀 POOLED / UNPOOLED -->
+				<property name="driver" value="${driver}" />
+				<property name="url" value="${url}" />
+				<property name="username" value="${username}" />
+				<property name="password" value="${password}" />
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<!-- 여러개의 mapper 설정 -->
+	<mappers>
+		<mapper resource="board/mybatis/mapper/BoardMapper.xml" />
+	</mappers>
+</configuration>

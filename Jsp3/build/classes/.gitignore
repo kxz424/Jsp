@@ -1,0 +1,4 @@
+/board/
+/db.properties
+/log4j.xml
+/mybatis-config.xml

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.BoardMapper">
+
+	<!-- 총 게시판 수 -->
+	<select id="selectCnt" resultType="int">
+		select count(*) as cnt from article
+	</select>
+
+	<!-- 게시판 조회 -->
+	<select id="selectAll" parameterType="hashmap" resultType="boardRec">
+		select article_id, group_id, sequence_no, posting_date, read_count, writer_name, title from article 
+		where sequence_no in(select sequence_no from (select rownum as rnum, sequence_no from (select sequence_no from article order by sequence_no desc))
+		<![CDATA[where rnum>=#{firstRow} and rnum<=#{endRow}]]>) order by sequence_no desc
+	</select>
+	
+	<!-- 게시판 읽기 -->
+	<select id="selectRead" parameterType="hashmap" resultType="boardRec">
+		select * from article where article_id=#{id}
+	</select>
+	
+	<!-- 조회수 증가 -->
+	<update id="updateCnt" parameterType="hashmap">
+		update article set read_count=read_count+1 where article_id=#{article_id}
+	</update>
+	
+	<!-- 게시판 글쓰기 -->
+	<insert id="insertWrite" parameterType="boardRec">
+		insert into article (article_id, group_id, sequence_no, posting_date, read_count, writer_name, password, title, content)
+		values (seq_article_id_article.nextval, #{groupId}, #{sequenceNo}, sysdate, 0, #{writerName}, #{password}, #{title}, #{content})
+	</insert>
+	
+	<!-- 그룹번호 -->
+	<select id="selectGroup" resultType="int">
+		select seq_group_id_article.nextval groupid from dual
+	</select>
+	
+	<!-- 게시글 삭제 -->
+	<delete id="deleteBoard" parameterType="hashmap">
+		delete from article where article_id=#{article_id} and password=#{password}
+	</delete>
+	
+	<!-- 게시글 수정 -->
+	<update id="updateBoard" parameterType="boardRec">
+		update article set title=#{title}, content=#{content} 
+		where article_id=#{articleId} and password=#{password}
+	</update>
+	
+	<!-- 부모 레코드 번호 -->
+	<select id="replySeqNum" parameterType="hashmap" resultType="string">
+		SELECT min(sequence_no) as minseq FROM article 
+		WHERE <![CDATA[sequence_no < #{maxSeqNum} AND sequence_no >= #{minSeqNum}]]>
+	</select>
+	
+	<!-- 게시글 번호 조회 -->
+	<select id="selectId" resultType="int">
+		select seq_article_id_article.currval cval from dual
+	</select>
+	
+	
+
+</mapper>
