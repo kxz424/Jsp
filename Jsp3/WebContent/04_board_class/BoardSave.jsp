@@ -12,12 +12,6 @@
 	<jsp:setProperty name="rec" property="*"></jsp:setProperty>
 </jsp:useBean>
 
-<%
-	// 2. Service클래스에 write() 함수호출
-// 	rec = WriteArticleService.getInstance().write(rec);
-// 	WriteArticleService service = WriteArticleService.getInstance();
-// 	rec = service.write(rec);
-%>
 <!DOCTYPE html>
 <html>
 <head>
